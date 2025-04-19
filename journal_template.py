@@ -38,19 +38,23 @@ def create_daily_entry(entry_num):
 page_title = "# Lifestream Week 2389"
 author = "*by Seamus Hughes*"
 
-#-----Collect date of birth-----
-birth_date = input("whats your  birthday (dd/mm/yyyy)? ")
-# NOTE this is prone to errors. Will ad error checking later.
-#Parsing Date Strings
+#-----Weeks Alive-----
+# Fixed. birth date as personal project. 
+birthday = "28/06/1979"
 format_code = "%d/%m/%Y" # MUST match string format!
+today = datetime.datetime.today().date()
 # parse the string into a datetime object. 
-datetime_object = datetime.datetime.strptime(birth_date,format_code)
-# Get just the date part 
-date_object = datetime_object.date()
+birth_date = datetime.datetime.strptime(birthday,format_code).date()
+# Date Maths
+date_difference = today - birth_date
+days = date_difference.days
+weeks = days // 7
+
 # Get the day of the week. (0 = Mon to 6 = Sun)
-day_number = date_object.weekday()
+day_number =  birth_date.weekday()
+
 # Output 
-print(f"Birth date object: {date_object}")
+print(f"Lifestream Week {weeks}")
 print(f"Weekday number (0 = Mon to 6 = Sun): {day_number}")
 # Will print number. use logic later to convert to Mon, Tues....
 
