@@ -50,6 +50,28 @@ print(current_year)
 appro_age = current_year - year_number
 print(f"You are approximately {appro_age} years old?")
 
+'''Parsing Date Strings (strptime)'''
+# Variables
+date_string_from_user = "28/06/1979"
+format_code = "%d/%m/%Y" # MUST match string format!
+# parse the string into a datetime object. 
+datetime_object = datetime.datetime.strptime(date_string_from_user,format_code)
+
+# Check code 
+print(f"String was: {date_string_from_user}")
+print(f"Parse object is: {datetime_object}")
+print(f"Type is: {type(datetime_object)}")
+
+# Get just the date part 
+date_object = datetime_object.date()
+print(f"Extracting Date part: {date_object}")
+print(f"Type is: {type(date_object)}")
+
+# Finding the day of the week. 
+day_number = date_object.weekday()
+print(f"Day number = {day_number}")
+# Will print number. use logic later to convert to Mon, Tues....
+
 '''
 #-----Main Loop------
 
