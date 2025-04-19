@@ -1,5 +1,3 @@
-Here is my code 
-
 # Author: Seamus Hughes
 # Date: 8th April 2025
 # Purpose: Template for my weekly Lifestream posts.
@@ -40,36 +38,20 @@ def create_daily_entry(entry_num):
 page_title = "# Lifestream Week 2389"
 author = "*by Seamus Hughes*"
 
-#-----Calculate approx age
-birth_year = input("what year were you born? ")
-year_number = int(birth_year)
-# Obtain current year
-current_year = datetime.date.today().year
-print(current_year)
-# calculate approx age 
-appro_age = current_year - year_number
-print(f"You are approximately {appro_age} years old?")
-
-'''Parsing Date Strings (strptime)'''
-# Variables
-date_string_from_user = "28/06/1979"
+#-----Collect date of birth-----
+birth_date = input("whats your  birthday (dd/mm/yyyy)? ")
+# NOTE this is prone to errors. Will ad error checking later.
+#Parsing Date Strings
 format_code = "%d/%m/%Y" # MUST match string format!
 # parse the string into a datetime object. 
-datetime_object = datetime.datetime.strptime(date_string_from_user,format_code)
-
-# Check code 
-print(f"String was: {date_string_from_user}")
-print(f"Parse object is: {datetime_object}")
-print(f"Type is: {type(datetime_object)}")
-
+datetime_object = datetime.datetime.strptime(birth_date,format_code)
 # Get just the date part 
 date_object = datetime_object.date()
-print(f"Extracting Date part: {date_object}")
-print(f"Type is: {type(date_object)}")
-
-# Finding the day of the week. 
+# Get the day of the week. (0 = Mon to 6 = Sun)
 day_number = date_object.weekday()
-print(f"Day number = {day_number}")
+# Output 
+print(f"Birth date object: {date_object}")
+print(f"Weekday number (0 = Mon to 6 = Sun): {day_number}")
 # Will print number. use logic later to convert to Mon, Tues....
 
 '''
