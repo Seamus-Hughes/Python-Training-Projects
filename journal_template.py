@@ -2,25 +2,30 @@
 # Date: 5th April 2025
 # Purpose: Template for my weekly Lifestream posts.
 
+#----Imported Module----
+import datetime # Correctly imported!
+
 #----Variables----
-# NOTE week number is dynamic and will change with each week.
-# NOTE day_title will be dynamic
-# NOTE week starts in Thursday for this project.
-# NOTE full date to be added.
+# ... (previous variables are fine) ...
 page_title = "# Lifestream Week 2389"
 author = "*by Seamus Hughes*"
-day_title = "#### Thursday"
+day_title = "#### Thursday" # We'll link this to the actual date later!
 
 # markdown template of post
 # NOTE, number in [] is dynamic and changed for each day.
 post_template = """
 > quote[1]
-> -- atribute
+> -- attribute # (Minor typo: attribute)
 
 [1]: note"""
 
+# ----Date----
+# get todays daye object l # (Minor typo: date)
+todays_date = datetime.date.today() # Correctly gets the date object!
+print(todays_date) # Correctly prints it!
+
 # ----Combine variables----
-# NOTE f""" .... """ muti lines with {steings} dosn't work in this app
+# NOTE f""" .... """ multi lines with {strings} dosen't work in this app # (Minor typos: strings, doesn't)
 full_day_entry = f"{day_title}\n{post_template}"
 
 # combine all.
