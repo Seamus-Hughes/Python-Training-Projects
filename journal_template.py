@@ -3,37 +3,54 @@
 # Purpose: Template for my weekly Lifestream posts.
 
 #----Imported Module----
-import datetime
+import datetime 
 
 #----Variables----
-# ... (previous variables are fine) ...
+# NOTE week number is dynamic and will change with each week. 
+# NOTE day_title will be dynamic 
+# NOTE week starts in Thursday for this project.
+# NOTE full date to be added. 
 page_title = "# Lifestream Week 2389"
 author = "*by Seamus Hughes*"
-day_title = "#### Thursday" # We'll update this using the formatted date soon!
+day_title = "#### Thursday"
 
-# markdown template of post
-# NOTE, number in [] is dynamic and changed for each day.
+# markdown template of post 
+# NOTE, number in [] is dynamic and changed for each day. 
 post_template = """
 > quote[1]
-> -- attribute # (Minor typo: attribute)
+> -- attribute
 
 [1]: note"""
 
 # ----Date----
-# get todays date object
+# create date objects 
 todays_date = datetime.date.today()
-print(todays_date) # Prints the original date object (e.g., 2025-04-07)
+delta_1_day = datetime.timedelta(days=1)
 
+# Date Maths
+yesterdays_date = todays_date - delta_1_day
+tomorrows_date = todays_date + delta_1_day
+
+# Dispay dates
+
+print(f"Yeaterdays date: {yesterdays_date}")
+print(f"Todays date: {todays_date}")
+print(f"Tomorrows date: {tomorrows_date}")
+print("")
 # formated date in a string
 # NOTE prefered format is 'Monday 7th April 2025'
-# please facilitate adding "st" "nd" and "th" as a future part of this tutorial.
-formated_date = todays_date.strftime("%A, %B, %-d, %Y") # Correct use of strftime!
-print(formated_date) # Prints the formatted string!
+# please facilitate adding "st" "nd" and "th" as a future part of this tutorial. 
+formated_yesterday = yesterdays_date.strftime("%A, %B, %-d, %Y")
+formated_today = todays_date.strftime("%A, %B, %-d, %Y")
+formated_tomorrow = tomorrows_date.strftime("%A, %B, %-d, %Y")
+print(formated_yesterday)
+print(formated_today)
+print(formated_tomorrow)
 print("")
+
 # ----Combine variables----
-# NOTE f""" .... """ multi lines with {strings} doesn't work in this app # (Minor typos: strings, doesn't)
+# NOTE f""" .... """ multi lines with {strings} doesn't work in this app
 full_day_entry = f"{day_title}\n{post_template}"
 
 # combine all.
 print(f"{page_title}\n\n{author}\n\n{full_day_entry}")
-
