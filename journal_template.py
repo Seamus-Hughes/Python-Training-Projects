@@ -1,3 +1,5 @@
+Here is my code 
+
 # Author: Seamus Hughes
 # Date: 8th April 2025
 # Purpose: Template for my weekly Lifestream posts.
@@ -5,7 +7,7 @@
 #----Imported Modules----
 import datetime 
 
-#----Fuctions-----
+#----Functions-----
 
 def create_formatted_date(date_object):
 	'''Formatting date into a nice looking string'''
@@ -38,6 +40,17 @@ def create_daily_entry(entry_num):
 page_title = "# Lifestream Week 2389"
 author = "*by Seamus Hughes*"
 
+#-----Calculate approx age
+birth_year = input("what year were you born? ")
+year_number = int(birth_year)
+# Obtain current year
+current_year = datetime.date.today().year
+print(current_year)
+# calculate approx age 
+appro_age = current_year - year_number
+print(f"You are approximately {appro_age} years old?")
+
+'''
 #-----Main Loop------
 
 # Create page header
@@ -46,3 +59,4 @@ print(f"{page_title}\n\n{author}\n\n")
 for i in range(7):
 	print(create_daily_entry(i))
 	print("")
+'''
