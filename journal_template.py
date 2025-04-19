@@ -1,14 +1,24 @@
 # Author: Seamus Hughes
-# Date: 4th April 2025
-# Purpose: Demonstrates printing message and comments.
+# Date: 5th April 2025
+# Purpose: Template for my weekly Lifestream posts.
 
-#assign name and hobby sentences
-my_name_sentence = "Hello, my name is James."
-my_hobby_sentence = "My favourite hobby is reading"
+# Title of each page
+# NOTE week no is dynamic and will change with each week.
+page_title = "# Lifestream Week 2389" + "\n" + "\n"
 
-# To display name.
-print(my_name_sentence)
-# To display hobby.
-print(my_hobby_sentence)
-# Don't show my age
-# print("My age is 45")
+# Author - same every time.
+author = "*by Seamus Hughes*"
+
+# Day title will be dynamic
+# NOTE week starts in Thursday for this project.
+# NOTE full date to be added.
+day_title = "#### Thursday"
+
+# markdown template of post
+# NOTE, number in [] is dynakic and chabged for each day.
+post_template = """> quote[1]\n> -- atribute\n\n[1]: note"""
+
+print(page_title)
+print(author)
+print("\n")
+print(day_title + "\n" + post_template)
