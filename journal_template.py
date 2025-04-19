@@ -27,30 +27,32 @@ post_template = """
 todays_date = datetime.date.today()
 delta_1_day = datetime.timedelta(days=1)
 
-# Date Maths
-yesterdays_date = todays_date - delta_1_day
-tomorrows_date = todays_date + delta_1_day
-
-# Display dates
-
-print(f"Yesterday's' date: {yesterdays_date}")
-print(f"Todays date: {todays_date}")
-print(f"Tomorrows date: {tomorrows_date}")
-print("")
-# Formatted date in a string
-# NOTE prefered format is 'Monday 7th April 2025'
-# please facilitate adding "st" "nd" and "th" as a future part of this tutorial. 
-formatted_yesterday = yesterdays_date.strftime("%A, %B, %-d, %Y")
-formatted_today = todays_date.strftime("%A, %B, %-d, %Y")
-formatted_tomorrow = tomorrows_date.strftime("%A, %B, %-d, %Y")
-print(formatted_yesterday)
-print(formatted_today)
-print(formatted_tomorrow)
-print("")
-
+# Loop to create 7 days. 
 # counting through the days of the week.
 for i in range(7):
-	print(i)
+	# iterate through 7 days
+	delta_day = datetime.timedelta(days=i)
+	# create datetime object for eaxh of 7 days 
+	# 1st day always today as i = 0
+	day_of_week = todays_date + delta_day
+	# Displays dates
+	print(day_of_week)
+print("")
+
+# Loop to create 7 days. 
+# counting through the days of the week.
+for i in range(7):
+	# iterate through 7 days (formatted)
+	delta_day = datetime.timedelta(days=i)
+	# create datetime object for eaxh of 7 days 
+	# 1st day always today as i = 0
+	day_of_week = todays_date + delta_day
+	# Formatted date in a string
+	# NOTE prefered format is 'Monday 7th April 2025'
+	# please facilitate adding "st" "nd" and "th" as a future part of this tutorial. 
+	formatted_day_of_week = day_of_week.strftime("%A, %B, %-d, %Y")
+	# Displays dates
+	print(formatted_day_of_week)
 print("")
 
 # ----Combine variables----
