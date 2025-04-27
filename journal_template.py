@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 22nd April 2025
+# Date: 27th April 2025
 # Purpose: Template for my weekly Lifestream posts.
 
 #----Imported Modules----
@@ -10,15 +10,15 @@ import  math # For rounding
 
 def create_formatted_date(date_object):
 	'''Formatting date into a nice looking string'''
-	# NOTE prefered format is 'Monday 7th April 2025'
-	# please facilitate adding "st" "nd" and "th" as a future part of this tutorial.
+	# add .day to get just the day number 
+	day_object = date_object.day # output - 1-31 as int
+	# use strftime to format date object
+	# use f string to allow date_ordinal to work. 
+	formatted_date = date_object.strftime(f"%A %-d{date_ordinal(day_object)} %B %Y") # Output = Monday 7th April 2025
 	# NOTE %-d used to get rid of leading zero might not work in some instances.
-	formatted_date = date_object.strftime("%A %-d %B %Y") # Output = Monday 7 April 2025
 	return formatted_date
 
-#-----Date suffix-----
-
-def date_ordinal (day_no):
+def date_ordinal(day_no):
 	'''Add the corrct ordinal suffix to dates st, nd, rd, th'''
 	# Rounds UP to to nearest 10ths
 	rounded = math.ceil(day_no / 10) * 10
@@ -52,7 +52,7 @@ def create_daily_entry(entry_num):
 	
 	# -----markdown template ------
 	# NOTE f""" .... """ multi lines with {strings} doesn't work in this app
-	day_entry = f"#### {formatted_day_of_week}\n\n> quote[^{entry_num+1}]\n> --attribute\n\n[^{entry_num+1}]: note"
+	day_entry = f"#### {formatted_day_of_week}\n\n> quote[^{entry_num+1}]\ \n> -- *attribute*\n\n[^{entry_num+1}]: note"
 	return day_entry
 
 def weeks_alive(birthday):
@@ -70,7 +70,7 @@ def weeks_alive(birthday):
 #----Variables----
 # Fixed. birth date as personal project. 
 birthday = "28/06/1979"
-page_title = f"Lifestream Week {weeks_alive(birthday)}"
+page_title = f"# Lifestream Week {weeks_alive(birthday)}"
 author = "*by Seamus Hughes*"
 
 format_code = "%d/%m/%Y" # MUST match string format!
@@ -81,11 +81,7 @@ print(f"Weekday number (0 = Mon to 6 = Sun): {day_number}")
 # NOTE week starts in Thursday for this project.
 # Will print number. use logic later to convert to Mon, Tues....
 
-# loop to check and debug date_ordinal function. 
-for i in range(31):
-	i = i + 1 
-	print(f"Date: {i}{date_ordinal(i)}")
-
+	
 #-----Main Loop------
 
 # Create page header
