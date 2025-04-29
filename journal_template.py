@@ -40,9 +40,9 @@ def date_ordinal(day_no):
 	return ordinal
 
 def offset_to_thurs (given_date):
-	'''Offset any date given to the previous Thurseday. 
+	'''Offset any date given to the previous Thursday. 
 	
-	Uses Modulo (%). Produces the remainder after multiples of 7 removed. The remainder is alao the number of days you have to go back to get to Thirsday. '''
+	Uses Modulo (%). Produces the remainder after multiples of 7 removed. The remainder is alao the number of days you have to go back to get to Thursday. '''
 	# Given_weekday No as int Mon = 0, Tues 1.... 
 	given_weekday = given_date.weekday()
 	
@@ -92,49 +92,6 @@ todays_date = datetime.datetime.today()
 birthday = "28/06/1979"
 page_title = f"# Lifestream Week {weeks_alive(birthday)}"
 author = "*by Seamus Hughes*"
-
-format_code = "%d/%m/%Y" # MUST match string format!
-birth_date = datetime.datetime.strptime(birthday,format_code).date()
-
-# Get the day of the week. (0 = Mon to 6 = Sun)
-day_number = birth_date.weekday()
-print(f"Weekday number (0 = Mon to 6 = Sun): {day_number}")
-# NOTE week starts in Thursday for this project. (as i was born on a Thursday)
-# Will print number. use logic later to convert to Mon, Tues....
-
-#----Test Bed-----
-
-# Test Run to work out how Modulo works in this section. 
-
-for i in range(7):
-	# i - 3 gives Thursday week value of 0
-	i = i - 3 + 7 
-	# If the % No. is positive it gives a positve result even if i is negative. 
-	# Produces the remainder after multiples of 7 removed
-	# Add 7 to i above and it produces same result. infact it makes it easier to understand.
-	# The trick here is the remainder is alao the number of days you have to go back to get to Thirsday. 
-	modulo = i % 7
-	print(f"i = {i}")
-	print(f"mod = {modulo}")
-	
-# Debug code to assess new offset_to_thurs function
-
-# Create test date
-start_date = datetime.date(2025, 1, 6)
-print(start_date)
-
-for i in range(7):
-	# create a datetime object out of i into respective No of days.
-	days_offset = datetime.timedelta(days=i)
-	# create 7 consecutive days 
-	test_date = start_date + days_offset
-	weekday = test_date.weekday()
-	print("")
-	print(f"Test run No. {i+1}")
-	print (days_offset)
-	print(test_date)
-	print(f"{weekday} - weekday")
-	print(offset_to_thurs(test_date))
 
 #-----Main Loop------
 
