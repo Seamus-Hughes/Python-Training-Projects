@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 29th April 2025
+# Date: 1st May 2025
 # Purpose: Template for my weekly Lifestream posts.
 
 #----Imported Modules----
@@ -57,16 +57,12 @@ def offset_to_thurs (given_date):
 	offset_date = given_date - offset_days
 	return offset_date
 
-def create_daily_entry(entry_num):
+def create_daily_entry(date_for_entry, entry_num):
 	'''Using range number given, will create template for daily lifelog post'''
-	# ----Date----
-	# create todays date 
-	todays_date = datetime.date.today()
-	offset_date = offset_to_thurs(todays_date)
 	# create datetime object for each of 7 days
 	# 1st day always today as entry_num = 0
 	delta_day = datetime.timedelta(days=entry_num)
-	day_of_week = offset_date + delta_day
+	day_of_week = date_for_entry + delta_day
 	formatted_day_of_week = create_formatted_date(day_of_week)
 	
 	# -----markdown template ------
@@ -83,7 +79,8 @@ def weeks_alive(birthday):
 	# Date Maths
 	date_difference = today - birth_date
 	days = date_difference.days
-	weeks = days // 7
+	# Weeks + 1 as first week is week 1 not 0
+	weeks = days // 7 + 1
 	return weeks
 	
 #----Variables----
@@ -95,9 +92,11 @@ author = "*by Seamus Hughes*"
 
 #-----Main Loop------
 
+# calculate week start date
+week_start_date = offset_to_thurs(todays_date)
 # Create page header
 print(f"{page_title}\n\n{author}\n\n")
 # Create template post for each 7 days. 
 for i in range(7):
-	print(create_daily_entry(i))
+	print(create_daily_entry(week_start_date,i))
 	print("")
