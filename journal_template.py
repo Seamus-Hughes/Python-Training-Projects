@@ -19,7 +19,7 @@ def create_formatted_date(date_object):
 	return formatted_date
 
 def date_ordinal(day_no):
-	'''Add the corrct ordinal suffix to dates st, nd, rd, th'''
+	'''Add the correct ordinal suffix to dates st, nd, rd, th'''
 	# Rounds UP to to nearest 10ths
 	rounded = math.ceil(day_no / 10) * 10
 	# Obtains remander after removing 10ths
