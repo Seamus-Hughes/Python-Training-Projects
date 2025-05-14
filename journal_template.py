@@ -94,26 +94,19 @@ author = "*by Seamus Hughes*"
 
 # calculate week start date
 week_start_date = offset_to_thurs(todays_date.date())
-# Create dynamic page header for console 
-print(f"{page_title}\n\n{author}\n\n")
 # Starts string for saving to file
 print_to_file = f"{page_title}\n\n{author}\n\n"
 # Create template post for each 7 days. 
 for i in range(7):
 	# Creates markdown for each day
 	daily_entry = create_daily_entry(week_start_date,i)
-	# Prints daily_entry to console
-	print(daily_entry)
-	print("")
 	# Adds daily_entry to string for file creation.
 	print_to_file += daily_entry + "\n\n"
 	# NOTE += includes to contents of called variable + anytring else addes. 
 	# All new lines need to be added to the string 
-	 
-	
+
 #----Print to File-----
 
-#-----Test bed------
 # Create dynamic title
 # Remeber to add file type (.md)
 dynamic_title = f"Lifestream Week {weeks_alive(birthday)}.md"
@@ -121,7 +114,7 @@ dynamic_title = f"Lifestream Week {weeks_alive(birthday)}.md"
 # Creates a new file, gives file name, writes to file.
 # NOTE: adeed encoding= "utf-8" for better future compatability
 with open(dynamic_title, "w", encoding= "utf-8") as my_file:
-	# Write a string to file.  
+	# Write a string to file.
 	my_file.write(print_to_file)
 
 #NOTE: # Replaces all contents if file already exsists.
