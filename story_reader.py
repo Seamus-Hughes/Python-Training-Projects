@@ -21,17 +21,15 @@ try:
 		# Get contents of the file
 		content = file.read()
 		
-		#Print out the cobtebts of the file.
+		#Print out the contents of the file.
 		print("Displaying your story")
 		print("-----------------")
 		print(content)
 		print("-----------------")
 
-#Error messege if no file. 		
+#Error message if no file. 		
 except FileNotFoundError:
 	print(f"\nError: The file '{file_path}' was not found.")
 	print("Please make sure you have created 'my_story.txt' in the same directory as this script.")
 
 print("\nProgram finished.")
-		
-		
