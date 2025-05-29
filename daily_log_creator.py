@@ -1,6 +1,6 @@
 # Author: Seamus Hughes
 # Date: 27th May 2025
-# Purpose: Open a file and read the contents.
+# Purpose: Creating a daily log.
 #----Imported Modules----
 
 
