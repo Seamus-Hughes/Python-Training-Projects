@@ -1,6 +1,7 @@
 # Author: Seamus Hughes
-# Date: 27th May 2025
-# Purpose: Creating a daily log using the apend file fuction.
+# Date: 31st May 2025
+# Purpose: Creating a daily log using the append file function.
+
 #----Imported Modules----
 
 
@@ -12,17 +13,17 @@
 # Store file_path
 file_path = 'daily_log.txt' 
 
-#-----Main Loop------
+#-----Main Logic------
 print("---Adding a note to your daily log.----")
 
-# Requesting note imput feom user. 
+# Requesting note input from user. 
 daily_note = input("What would you like to add? ")
  
 try:
 	# Opening a file to append 'a'.
 	# If no file, file will be created. 
 	with open(file_path, 'a') as file:
-		# Get contents of the file
+		# Write the new note to the file
 		file.write(daily_note)
 		file.write("\n")
 	
@@ -34,10 +35,11 @@ except IOError:
 # Display the entire contents of the note. 
 try:
 	with open(file_path, 'r') as file:
+		# Get contents of file.
 		content = file.read()		
 		
 		# Print out the contents of the file.
-		print("Displaying your pesonal log")
+		print("Displaying your personal log")
 		print("-----------------")
 		print(content)
 		print("-----------------")
