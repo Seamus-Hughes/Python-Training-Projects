@@ -1,6 +1,6 @@
 # Author: Seamus Hughes
 # Date: 27th May 2025
-# Purpose: Creating a daily log.
+# Purpose: Creating a daily log using the apend file fuction.
 #----Imported Modules----
 
 
@@ -10,19 +10,34 @@
 #----Variables----
 
 # Store file_path
-file_path = 'my_story.txt' 
+file_path = 'daily_log.txt' 
 
 #-----Main Loop------
-print(f"Attempting to open and read the file: {file_path}\n\n")
+print("---Adding a note to your daily log.----")
+
+# Requesting note imput feom user. 
+daily_note = input("What would you like to add? ")
  
 try:
-	# Opening a file to read 'r'.
-	with open(file_path, 'r') as file:
+	# Opening a file to append 'a'.
+	# If no file, file will be created. 
+	with open(file_path, 'a') as file:
 		# Get contents of the file
-		content = file.read()
+		file.write(daily_note)
+		file.write("\n")
+	
+	print(f"Successfully added your note to {file_path}.")
+
+except IOError:
+    print(f"Error: Could not append to the file '{file_path}'.")
+
+# Display the entire contents of the note. 
+try:
+	with open(file_path, 'r') as file:
+		content = file.read()		
 		
-		#Print out the contents of the file.
-		print("Displaying your story")
+		# Print out the contents of the file.
+		print("Displaying your pesonal log")
 		print("-----------------")
 		print(content)
 		print("-----------------")
@@ -30,6 +45,5 @@ try:
 #Error message if no file. 		
 except FileNotFoundError:
 	print(f"\nError: The file '{file_path}' was not found.")
-	print("Please make sure you have created 'my_story.txt' in the same directory as this script.")
-
+	
 print("\nProgram finished.")
