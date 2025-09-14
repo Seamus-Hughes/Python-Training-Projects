@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 9th September  2025
+# Date: 14th September  2025
 # Purpose: Creating a daily log using the append file function. with added log file check
 
 #----Imported Modules----
@@ -27,23 +27,23 @@ print("\n")
 # Check if file exists
 if os.path.exists(file_path):
 	# print file path 
-	print (f"File path: {file_path}")
+	print (f"File Path: {file_path}")
 	# Get file size
 	file_size = os.path.getsize(file_path)
-	print(f"size: {file_size} bytes")
+	print(f"Size: {file_size} bytes")
 	mod_timestamp = os.path.getmtime(file_path)
 	# convert time stamp into datetime object. 
 	mod_datetime = datetime.datetime.fromtimestamp(mod_timestamp)
 	# Format timestamp into readable time. 
 	format_timestamp = mod_datetime.strftime("%d.%m.%y %H:%M:%S")
-	print(f"modified: {format_timestamp}")
+	print(f"Modified: {format_timestamp}")
 	# get file type
-	filename_root, file_extention = os.path.splitext(file_path)
-	print(f"Extention: {file_extention}")
+	filename_root, file_extension = os.path.splitext(file_path)
+	print(f"Extension: {file_extension}")
 	print("\n")
 # Returns error message if file does not exist. 
 else:
-	print(f"Error {file_path} not found")
+	print(f"Error '{file_path}' not found. Please add an entry first to create it.")
 
 print("---Adding a note to your daily log.----")
 print("\n")
