@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 22nd September  2025
+# Date: 26th September  2025
 # Purpose: Creating a daily log using the append file function. with added log file check and path finder element
 
 #----Imported Modules----
@@ -18,35 +18,28 @@ import datetime
 # Store file_path
 file_name = 'daily_log.txt'
 log_folder = 'logs'
+# Creating relative path for the file 
+# use os.path.join() to correctly build the file path
+relative_path = os.path.join(log_folder, file_name)
 
 #-----Main Logic------
 print("\n")
 print(f"----Path Finder Inspector----")
 print (f"Finding file: {file_name}")
 print("\n")
-# Creatibg relative path for the file 
-# use os.path.join() to correctly build the file path
-relative_path = os.path.join(log_folder, file_name)
+
 # Check if file exsists at this location. 
-file_present = os.path.exists(relative_path)
-# Change True to yes/no
-if file_present == True:
-	file_present_answer = "Yes"
-else:
-	file_present_answer ="No"
-	
-print(f"Is the file {file_name} in {log_folder} present? {file_present_answer}")
-print(f"The files relative path is: {relative_path}")
-absolute_path = os.path.abspath(relative_path)
-print(f"Absolute Directory = {absolute_path}")
-
-print("\n")
-print(f"----Log File Inspector----")
-print(f"Analyzing file: {file_name}")
-print("\n")
-
-# Check if file exists
 if os.path.exists(relative_path):
+	
+	print(f"Is the file {file_name} in {log_folder} present? Yes")
+	print(f"The files relative path is: {relative_path}")
+	absolute_path = os.path.abspath(relative_path)
+	print(f"Absolute Path = {absolute_path}")
+	
+	print("\n")
+	print(f"----Log File Inspector----")
+	print(f"Analyzing file: {file_name}")
+	print("\n")
 	# print file path 
 	print (f"File Name: {file_name}")
 	# Get file size
