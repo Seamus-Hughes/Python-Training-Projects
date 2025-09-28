@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 26th September  2025
+# Date: 27th September  2025
 # Purpose: Creating a daily log using the append file function. with added log file check and path finder element
 
 #----Imported Modules----
@@ -24,13 +24,34 @@ relative_path = os.path.join(log_folder, file_name)
 
 #-----Main Logic------
 print("\n")
-print(f"----Path Finder Inspector----")
-print (f"Finding file: {file_name}")
-print("\n")
+print(f"----Listing files is {log_folder} directory----")
+# check if target directory exisits
+if not os.path.exists(log_folder):
+	print (f"'{log_folder}' directory does not found.")
+	print (f"Please create {log_folder} before running this script.")
+else:	
+	try:
+		# string created of all the names in directory
+		items_in_Dir = os.listdir(log_folder)
+		# If empty string then directory is empty
+		if not items_in_Dir:
+			print("The directory is empty.")
+		else:
+			for item_name in items_in_Dir:
+				# build path to item to enqble file check 
+				full_item_path = os.path.join(log_folder, item_name)
+				#print out just the files, not subfolders
+				if os.path.isfile(full_item_path):
+					print (f"FILE:    {item_name}")
+			print("\n")
+			print("----scan complete----")
+	except Exception as e:
+		print("an error has occured")
+	
 
 # Check if file exsists at this location. 
 if os.path.exists(relative_path):
-	
+	print("\n")
 	print(f"Is the file {file_name} in {log_folder} present? Yes")
 	print(f"The files relative path is: {relative_path}")
 	absolute_path = os.path.abspath(relative_path)
