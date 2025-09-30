@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 27th September  2025
+# Date: 29th September  2025
 # Purpose: Creating a daily log using the append file function. with added log file check and path finder element
 
 #----Imported Modules----
@@ -21,9 +21,37 @@ log_folder = 'logs'
 # Creating relative path for the file 
 # use os.path.join() to correctly build the file path
 relative_path = os.path.join(log_folder, file_name)
-
+# Store search term
+search_term = ".md"
 #-----Main Logic------
+
+# ---- Step 1 - Directory searxh ----
+
 print("\n")
+# Find out name of directory script is running in.
+dir_full_path = os.getcwd()
+# basename pulls the last part if thr full path.
+dir_name = os.path.basename(dir_full_path)
+print(f"---Search '{dir_name}' Directory---")
+print(f"Find all the markdown files in the {dir_name} directory.")
+print("\n")
+# Get all the items in the Directory
+items_in_root_dir = os.listdir(dir_full_path)
+# Loop through each item to perform search 
+for item_name in items_in_root_dir:
+	# Check item is a file 
+	# First you need to create full file path of item
+	full_path_to_item = os.path.join(dir_full_path, item_name)
+	#Then check item is a file /return only files. 
+	if os.path.isfile(full_path_to_item):
+		# sepwrate file name from file extension
+		filename_root, file_extension = os.path.splitext(item_name)
+		if file_extension == search_term:
+			print(item_name)
+print("\n")
+
+# ---- Step 2 - Directory Contents ----
+
 print(f"----Listing files is {log_folder} directory----")
 # check if target directory exisits
 if not os.path.exists(log_folder):
@@ -38,7 +66,7 @@ else:
 			print("The directory is empty.")
 		else:
 			for item_name in items_in_Dir:
-				# build path to item to enqble file check 
+				# build path to item to enable file check 
 				full_item_path = os.path.join(log_folder, item_name)
 				#print out just the files, not subfolders
 				if os.path.isfile(full_item_path):
@@ -47,7 +75,8 @@ else:
 			print("----scan complete----")
 	except Exception as e:
 		print("an error has occured")
-	
+
+# ---- Step 3 - Check File Exsist ---- 
 
 # Check if file exsists at this location. 
 if os.path.exists(relative_path):
@@ -56,6 +85,8 @@ if os.path.exists(relative_path):
 	print(f"The files relative path is: {relative_path}")
 	absolute_path = os.path.abspath(relative_path)
 	print(f"Absolute Path = {absolute_path}")
+	
+	# ---- Step 4 - Inspect File ----
 	
 	print("\n")
 	print(f"----Log File Inspector----")
@@ -83,6 +114,8 @@ else:
 print("---Adding a note to your daily log.----")
 print("\n")
 
+# ---- Step 5 - Add to file ----
+
 # Requesting note input from user. 
 daily_note = input("What would you like to add? ")
  
@@ -98,6 +131,8 @@ try:
 
 except IOError:
     print(f"Error: Could not append to the file '{file_name}'.")
+    
+# ---- Step 6 - Print contents of the file ----
 
 # Display the entire contents of the note. 
 try:
