@@ -1,11 +1,11 @@
 # Author: Seamus Hughes
-# Date: 4th May 2025
+# Date: 1st October 2025
 # Purpose: Templatem in Markdown for my weekly Lifestream posts.
 
 #----Imported Modules----
 import datetime # For date management
 import  math # For rounding
-
+import shutil
 #----Functions-----
 
 def create_formatted_date(date_object):
@@ -113,10 +113,13 @@ dynamic_title = f"Lifestream Week {weeks_alive(birthday)}.md"
 
 # Creates a new file, gives file name, writes to file.
 # NOTE: adeed encoding= "utf-8" for better future compatability
-with open(dynamic_title, "w", encoding= "utf-8") as my_file:
+try:
+	# 'x' mode stands for exclusive creation 
+	# creates and opens file for writing 
+	# will fail if file exsists.
+	with open(dynamic_title, "x", encoding= "utf-8") as my_file:
 	# Write a string to file.
-	my_file.write(print_to_file)
-
-#NOTE: # Replaces all contents if file already exsists.
-
-print("Message saved. ")
+		my_file.write(print_to_file)
+		print(f"Successfully created file '{dynamic_title}'")
+except FileExistsError:
+	print(f"ERROR: File '{dynamic_title}' already exists. can not create.")
