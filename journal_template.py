@@ -5,7 +5,8 @@
 #----Imported Modules----
 import datetime # For date management
 import  math # For rounding
-import shutil
+import os # For file handling
+
 #----Functions-----
 
 def create_formatted_date(date_object):
@@ -87,8 +88,11 @@ def weeks_alive(birthday):
 # Fixed. birth date as personal project.
 todays_date = datetime.datetime.today()
 birthday = "28/06/1979"
-page_title = f"# Lifestream Week {weeks_alive(birthday)}"
+current_weeks_alive = weeks_alive(birthday)
+page_title = f"# Lifestream Week {current_weeks_alive}"
 author = "*by Seamus Hughes*"
+output_folder = "Lifestreams"
+
 
 #-----Main Loop------
 
@@ -109,7 +113,13 @@ for i in range(7):
 
 # Create dynamic title
 # Remeber to add file type (.md)
-dynamic_title = f"Lifestream Week {weeks_alive(birthday)}.md"
+dynamic_title = f"Lifestream Week {current_weeks_alive}.md"
+# point file to directory
+full_path = os.path.join(output_folder, dynamic_title)
+# Make sure the folder exists
+if not os.path.exists(output_folder):
+	os.mkdir(output_folder)
+
 
 # Creates a new file, gives file name, writes to file.
 # NOTE: adeed encoding= "utf-8" for better future compatability
@@ -117,7 +127,7 @@ try:
 	# 'x' mode stands for exclusive creation 
 	# creates and opens file for writing 
 	# will fail if file exsists.
-	with open(dynamic_title, "x", encoding= "utf-8") as my_file:
+	with open(full_path, "x", encoding= "utf-8") as my_file:
 	# Write a string to file.
 		my_file.write(print_to_file)
 		print(f"Successfully created file '{dynamic_title}'")
