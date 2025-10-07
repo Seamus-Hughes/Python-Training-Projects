@@ -1,11 +1,12 @@
 # Author: Seamus Hughes
-# Date: 1st October 2025
+# Date: 7th October 2025
 # Purpose: Templatem in Markdown for my weekly Lifestream posts.
 
 #----Imported Modules----
 import datetime # For date management
 import  math # For rounding
 import os # For file handling
+import shutil # For file moving 
 
 #----Functions-----
 
@@ -82,16 +83,18 @@ def weeks_alive(birthday):
 	days = date_difference.days
 	# Weeks + 1 as first week is week 1 not 0
 	weeks = days // 7 + 1
-	return weeks
+	return weeks	
 	
 #----Variables----
-# Fixed. birth date as personal project.
 todays_date = datetime.datetime.today()
+# Fixed. birth date as personal project.
 birthday = "28/06/1979"
 current_weeks_alive = weeks_alive(birthday)
 page_title = f"# Lifestream Week {current_weeks_alive}"
 author = "*by Seamus Hughes*"
+# folder variables
 output_folder = "Lifestreams"
+archive_folder = "Archive"
 
 
 #-----Main Loop------
@@ -118,6 +121,7 @@ dynamic_title = f"Lifestream Week {current_weeks_alive}.md"
 full_path = os.path.join(output_folder, dynamic_title)
 # Make sure the folder exists
 if not os.path.exists(output_folder):
+	# creates to folder if needed.
 	os.mkdir(output_folder)
 
 
@@ -133,3 +137,42 @@ try:
 		print(f"Successfully created file '{dynamic_title}'")
 except FileExistsError:
 	print(f"ERROR: File '{dynamic_title}' already exists. can not create.")
+	
+#----Archiving Material----
+
+print(f"Archiving updated files to {archive_folder} folder.")
+
+# Identify or create archive folder
+if not os.path.exists(archive_folder):
+	print(f"creating {archive_folder} folder.")
+	os.mkdir(archive_folder)
+
+# Create list if files in output folder
+output_contents = os.listdir(output_folder)
+# Loop through output_contents
+for item_name in output_contents:
+	# Create full path the file
+	source_path = os.path.join(output_folder, item_name)
+	# Returns only is file. 
+	if os.path.isfile(source_path):
+		# seperate file name from file extension
+		filename_root, file_extension = os.path.splitext(item_name)
+		# Returns only markdown files 
+		if file_extension == ".md":
+			# Build path to archive folder so you can check current file against archived file 
+			destination_path = os.path.join(archive_folder, item_name)
+			# check if file dose not exist in archive folder. 
+			if not os.path.exists(destination_path):
+				# File not in archive so copy over
+				shutil.copy(source_path, destination_path)
+				print(f"{item_name}: saved.")
+			else:
+				# Compare archive and souce filesto see if any changew have been made.
+				# get modification times for eaxh file
+				source_mod_time = os.path.getmtime(source_path)
+				dest_mod_time = os.path.getmtime(destination_path)
+				# If source is newer the archive needs updating
+				if source_mod_time > dest_mod_time:
+					shutil.copy(source_path, destination_path)
+					print(f"{item_name}: updated.")
+print("Archiving process complete")
