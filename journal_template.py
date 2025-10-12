@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 7th October 2025
+# Date: 12th October 2025
 # Purpose: Templatem in Markdown for my weekly Lifestream posts.
 
 #----Imported Modules----
@@ -86,18 +86,52 @@ def weeks_alive(birthday):
 	return weeks	
 	
 #----Variables----
+set_birthday = '' # to be filled later 
+val_birthday = '' # to be filled later
+favorite_color = '' # to be filled later
 todays_date = datetime.datetime.today()
-# Fixed. birth date as personal project.
-birthday = "28/06/1979"
-current_weeks_alive = weeks_alive(birthday)
-page_title = f"# Lifestream Week {current_weeks_alive}"
 author = "*by Seamus Hughes*"
 # folder variables
 output_folder = "Lifestreams"
 archive_folder = "Archive"
-
+# Profile file names
+profile_file = "profile.txt"
 
 #-----Main Loop------
+
+#----- 1. Setup-------
+
+if os.path.exists("profile.txt"):
+	print("Welcome back to my Lifestream daily Journal Template")
+	# Safely opens the file and reads entire contents
+	with open(profile_file, 'r') as file:
+		# strip removes not needed white spaces, tabs or new liens 
+		val_birthday =  file.read().strip()
+		print(f"Your birthday is {val_birthday}")
+else:
+	print("Welcome to my Lifestream daily Journal template.")
+	# create a loop, only broken when a valid date is entered.
+	while True:	
+		try:
+			set_birthday = input("What is your birthday (dd/mm/yyyy)? ")
+			# validate the string and create datetime object.
+			val_birthday = datetime.datetime.strptime(set_birthday, "%d/%m/%Y")
+			# Ceates new file. WARNING will over write if already exaists. 
+			with open(profile_file, 'w') as file:
+				# Save date string rather than datetime to text file.
+				file.write(set_birthday)
+			break
+		except ValueError:
+			print("there was an error in your date input")
+			print("Please try again")
+
+# ----- Dynamic variables -----
+
+# Now we have a valid birthday we can create dunamoc variables based on the date 
+current_weeks_alive = weeks_alive(val_birthday)
+page_title = f"# Lifestream Week {current_weeks_alive}"
+
+#----- 2. Create Markdown Text -------
 
 # calculate week start date
 week_start_date = offset_to_thurs(todays_date.date())
@@ -112,7 +146,7 @@ for i in range(7):
 	# NOTE += includes to contents of called variable + anytring else addes. 
 	# All new lines need to be added to the string 
 
-#----Print to File-----
+#---- 3. Print to File-----
 
 # Create dynamic title
 # Remeber to add file type (.md)
@@ -138,7 +172,7 @@ try:
 except FileExistsError:
 	print(f"ERROR: File '{dynamic_title}' already exists. can not create.")
 	
-#----Archiving Material----
+#---- 4. Archiving Material-----
 
 print(f"Archiving updated files to {archive_folder} folder.")
 
