@@ -45,19 +45,19 @@ def date_ordinal(day_no):
 	return ordinal
 
 
-def offset_to_thurs(given_date):
-	'''Offset any date given to the previous Thursday.
+def offset_to_day(given_date, day_number):
+	'''Offset any date given to the previous day defined by the given day number.
 	
 	Uses Modulo (%). Produces the remainder after multiples of 7 removed. The remainder is also the number of days you have to go back to get to Thursday. '''
 	# Given_weekday No as int Mon = 0, Tues 1....
 	given_weekday = given_date.weekday()
 
-	# given_weekday - 3 gives Thursday week value of 0
-	days_from_thurs = (given_weekday - 3) % 7
+	# given_weekday - day_number gives day week value of 0
+	days_from_day_num = (given_weekday - day_number) % 7
 	# NOTE If the % No. is positive it gives a positve result even if it is negative.
 
-	# Days to take off to get to nearest Thursday.
-	offset_days = datetime.timedelta(days=days_from_thurs)
+	# Days to take off to get to nearest day defined by day_number.
+	offset_days = datetime.timedelta(days=days_from_day_num)
 
 	# create offset day.
 	offset_date = given_date - offset_days
@@ -79,9 +79,9 @@ def create_daily_entry(date_for_entry, entry_num):
 
 def weeks_alive(birthday):
 	'''Calculating how many weeks someone has been alive. NOTE birthday format need to be dd/mm/yyyy'''
-	format_code = "%d/%m/%Y"  # MUST match string format!
+	format_code = "%d/%m/%Y"  # MUST match string format! 
 	today = datetime.datetime.today().date()
-	# parse the string into a datetime object.
+	# Creating a datetime object out of the  string with set date format..
 	birth_date = datetime.datetime.strptime(birthday, format_code).date()
 	# Date Maths
 	date_difference = today - birth_date
@@ -133,16 +133,23 @@ else:
 			print("there was an error in your date input")
 			print("Please try again")
 
-# ----- Dynamic variables -----
+# ----- 2. Dynamic variables -----
 
 # Now we have a valid birthday we can create dynamic variables based on the date
 current_weeks_alive = weeks_alive(val_birthday)
 page_title = f"# Lifestream Week {current_weeks_alive}"
 
-# ----- 2. Create Markdown Text -------
+## Feom the bithday, work out  day if the week they were born.
+
+# Convert birthday string into datetime date object. 
+birthday = datetime.datetime.strptime(val_birthday, "%d/%m/%Y").date()
+# Find day number of birth date. 
+birth_day_number = birthday.weekday()
+
+# ----- 3. Create Markdown Text -------
 
 # calculate week start date
-week_start_date = offset_to_thurs(todays_date.date())
+week_start_date = offset_to_day(todays_date.date(), birth_day_number)
 # Starts string for saving to file
 print_to_file = f"{page_title}\n\n{author}\n\n"
 # Create template post for each 7 days.
@@ -154,7 +161,7 @@ for i in range(7):
 	# NOTE += includes to contents of called variable + anytring else addes.
 	# All new lines need to be added to the string
 
-# ---- 3. Print to File-----
+# ---- 4. Print to File-----
 
 # Create dynamic title
 # Remeber to add file type (.md)
@@ -179,7 +186,7 @@ try:
 except FileExistsError:
 	print(f"ERROR: File '{dynamic_title}' already exists. can not create.")
 
-# ---- 4. Archiving Material-----
+# ---- 5. Archiving Material-----
 
 print(f"Archiving updated files to {archive_folder} folder.")
 
