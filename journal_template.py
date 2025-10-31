@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 15th October 2025
+# Date: 31 October 2025
 # Purpose: Template in Markdown for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -92,6 +92,8 @@ def weeks_alive(birthday):
 
 
 # ----Variables----
+# Create empty dictionary to store info from profile txt file
+profile_data = {}
 set_birthday = ''  # to be filled later
 val_birthday = ''  # to be filled later
 favorite_color = ''  # to be filled later
@@ -113,8 +115,8 @@ if os.path.exists("profile.txt"):
 	# Safely opens the file and reads entire contents
 	with open(profile_file, 'r') as file:
 		# strip removes not needed white spaces, tabs or new lines
-		val_birthday = file.read().strip()
-		print(f"Your birthday is {val_birthday}")
+		set_birthday = file.read().strip()
+		print(f"Your birthday is {set_birthday}")
 # If profile.txt not there then it's the program's 1st run and needs to ask for birthday.
 else:
 	print("Welcome to my Lifestream daily Journal template.")
@@ -124,6 +126,10 @@ else:
 			set_birthday = input("What is your birthday (dd/mm/yyyy)? ")
 			# validate the string and create datetime object.
 			val_birthday = datetime.datetime.strptime(set_birthday, "%d/%m/%Y")
+			
+			# Save date string to dictionary
+			profile_data["birthday"] = set_birthday
+			print(profile_data)
 			# Creates new file. WARNING will over write if already exists.
 			with open(profile_file, 'w') as file:
 				# Save date string rather than datetime to text file.
@@ -136,13 +142,13 @@ else:
 # ----- 2. Dynamic variables -----
 
 # Now we have a valid birthday we can create dynamic variables based on the date
-current_weeks_alive = weeks_alive(val_birthday)
+current_weeks_alive = weeks_alive(set_birthday)
 page_title = f"# Lifestream Week {current_weeks_alive}"
 
 ## Feom the bithday, work out  day if the week they were born.
 
 # Convert birthday string into datetime date object. 
-birthday = datetime.datetime.strptime(val_birthday, "%d/%m/%Y").date()
+birthday = datetime.datetime.strptime(set_birthday, "%d/%m/%Y").date()
 # Find day number of birth date. 
 birth_day_number = birthday.weekday()
 
