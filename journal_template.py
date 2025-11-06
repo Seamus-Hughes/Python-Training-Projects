@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 31 October 2025
+# Date: 6th November 2025
 # Purpose: Template in Markdown for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -9,7 +9,6 @@ import os  # For file handling
 import shutil  # For file moving
 
 # ----Functions-----
-
 
 def create_formatted_date(date_object):
 	'''Create date into a preferred looking formatted string'''
@@ -72,9 +71,11 @@ def create_daily_entry(date_for_entry, entry_num):
 	day_of_week = date_for_entry + delta_day
 	formatted_day_of_week = create_formatted_date(day_of_week)
 
-	# -----markdown template ------
+# -----markdown template ------
 	# NOTE f""" .... """ multi lines with {strings} doesn't work in this app
-	day_entry = f"#### {formatted_day_of_week}\n\n> quote[^{entry_num+1}]\ \n> -- *attribute*\n\n[^{entry_num+1}]: note"
+	# NOTE for \\\n first \ is an added as The backslash before \n is being interpreted as an escape sequence. 
+	# Im escape sequencing the escape sequence!
+	day_entry = f"#### {formatted_day_of_week}\n\n> quote[^{entry_num+1}]\\\n> -- *attribute*\n\n[^{entry_num+1}]: note"
 	return day_entry
 
 def weeks_alive(birthday):
