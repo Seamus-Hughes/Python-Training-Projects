@@ -99,7 +99,6 @@ set_birthday = ''  # to be filled later
 val_birthday = ''  # to be filled later
 favorite_color = ''  # to be filled later
 todays_date = datetime.datetime.today()
-author = "*by Seamus Hughes*"
 # folder variables
 output_folder = "Lifestreams"
 archive_folder = "Archive"
@@ -108,15 +107,28 @@ profile_file = "profile.txt"
 
 # -----Main Loop------
 
-# ----- 1. Setup-------
-
 # If protife.txt exists then birthday has already been saved to file during previous run.
 if os.path.exists("profile.txt"):
 	print("Welcome back to my Lifestream daily Journal Template")
 	# Safely opens the file and reads entire contents
 	with open(profile_file, 'r') as file:
-		# strip removes not needed white spaces, tabs or new lines
-		set_birthday = file.read().strip()
+		# Read each line in the file 
+		for line in file:
+			# strip removes not needed white spaces, tabs or new lines
+			clean_line = line.strip()
+			# Split the line
+			# Split at 1st :
+			parts = clean_line.split(":", 1)
+			# Check if line was valid (has two parts)
+			if len(parts) == 2:
+				key = parts[0]
+				value = parts[1]
+				print(key)
+				print(value)
+				# add key and value to dictionary
+				profile_data[key] = value
+		# read birthday feom dictionary	
+		set_birthday = profile_data["birthday"]
 		print(f"Your birthday is {set_birthday}")
 # If profile.txt not there then it's the program's 1st run and needs to ask for birthday.
 else:
@@ -124,17 +136,22 @@ else:
 	# create a loop, only broken when a valid date is entered.
 	while True:
 		try:
+			author = input("Whats tour Name? ")
 			set_birthday = input("What is your birthday (dd/mm/yyyy)? ")
 			# validate the string and create datetime object.
 			val_birthday = datetime.datetime.strptime(set_birthday, "%d/%m/%Y")
 			
 			# Save date string to dictionary
+			
+			profile_data["author"] = author
 			profile_data["birthday"] = set_birthday
 			print(profile_data)
 			# Creates new file. WARNING will over write if already exists.
 			with open(profile_file, 'w') as file:
 				# Save date string rather than datetime to text file.
-				file.write(set_birthday)
+				# write to file with key-value approach. allows multi data to be saved to file. 
+				file.write(f"birthday:{set_birthday}\n")
+				file.write(f"author:{author}\n")
 			break
 		except ValueError:
 			print("there was an error in your date input")
