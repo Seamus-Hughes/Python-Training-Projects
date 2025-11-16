@@ -10,6 +10,10 @@ import os # for files
 def last_mod_file(directory):
 	'''Compare all files in defined directory. Compare date last modified, returning file last modified.'''
 	
+	# Check the directory exists
+	if not os.path.exists(directory):
+		raise FileNotFoundError(f"Directory {directory} not present")
+	
 	# Create list of files in Lifestreams folder
 	output_contents = os.listdir(directory)
 	
@@ -36,7 +40,7 @@ def last_mod_file(directory):
 	
 	# Check for any files 
 	if most_recent_file is None:
-		raise FileNotFoundError(f"No files found in {source_path}!")
+		raise FileNotFoundError(f"No files found in {directory}!")
 
 	# Return the name of file last saved	
 	return most_recent_file
@@ -46,10 +50,11 @@ log_folder = "Lifestreams"
 
 # ----- 1. Setup-------
 
-# Check the directory exsists
-if not os.path.exists(log_folder):
-	raise FileNotFoundError(f"Directory {log_folder} not presnt")
 
 # ----- 2.Identify file-----
+try:
+	print(last_mod_file(log_folder))
 
-print(last_mod_file(log_folder))
+# Allows errors to be printed on console	
+except FileNotFoundError as error:
+	print(f"Error: {error}")
