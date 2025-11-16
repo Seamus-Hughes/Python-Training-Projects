@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 15th November 2025
+# Date: 16th November 2025
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -33,6 +33,10 @@ def last_mod_file(directory):
 			if source_mod_time > most_recent_time:
 				most_recent_time = source_mod_time
 				most_recent_file = source_path
+	
+	# Check for any files 
+	if most_recent_file is None:
+		raise FileNotFoundError(f"No files found in {source_path}!")
 
 	# Return the name of file last saved	
 	return most_recent_file
@@ -42,6 +46,9 @@ log_folder = "Lifestreams"
 
 # ----- 1. Setup-------
 
+# Check the directory exsists
+if not os.path.exists(log_folder):
+	raise FileNotFoundError(f"Directory {log_folder} not presnt")
 
 # ----- 2.Identify file-----
 
