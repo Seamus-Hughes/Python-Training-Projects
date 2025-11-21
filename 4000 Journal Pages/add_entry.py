@@ -53,8 +53,30 @@ log_folder = "Lifestreams"
 
 # ----- 2.Identify file-----
 try:
-	print(last_mod_file(log_folder))
+	# Find file to edit
+	edit_file = last_mod_file(log_folder)
+	
+	# open file file to edit
+	with open (edit_file, "r", encoding="utf-8") as file:
+		file_contents = file.read()
 
 # Allows errors to be printed on console	
 except FileNotFoundError as error:
 	print(f"Error: {error}")
+	exit()
+
+# ----- 3.split file-----
+		
+# split contents of the file 
+# NOTE add leading space at end to clear from list
+parts = file_contents.split("#### ")
+
+# This moves 1st section to separate list
+# We can come back to it when rebuilding the pagw
+intro_section = parts[0]
+# Creats a seperate list of sections that i need to recview and possible edit.
+search_sections = parts[1:]
+	
+for section in search_sections:
+	print (section)
+	print ("-----------")
