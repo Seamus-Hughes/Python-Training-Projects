@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 16th November 2025
+# Date: 25th November 2025
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -46,20 +46,18 @@ def last_mod_file(directory):
 	return most_recent_file
 
 def read_markdown_file(markdown_file):
-	'''Opens markdown file and savescontents to a string'''
+	'''Opens markdown file and saves contents to a string'''
 	
-	# Uses Try: / except except to manage error if file not present. 
-	try:
-			
-		# open file file to edit
-		# NOTE encoding="utf-8" used to ensure Markup charachters in mqrkdown recognised
-		with open (markdown_file, "r", encoding="utf-8") as file:
-			file_contents = file.read()
-
-	# Allows errors to be printed on console	
-	except FileNotFoundError as error:
-		print(f"Error: {error}")
-		exit()
+	# Check markdown file extension
+	if not markdown_file.endswith(".md"):
+		raise ValueError(f"File '{markdown_file}' is not a markdown file.")
+	
+	# open file file to edit
+	# NOTE open() checks if file exists and open() checks if it’s actually a file (not a directory). 
+	# Will return a error message automatically. 
+	# NOTE encoding="utf-8" used to ensure Markup characters in markdown recognised
+	with open (markdown_file, "r", encoding="utf-8") as file:
+		file_contents = file.read()
 		
 	# Return the contents of markdown file as a string	
 	return file_contents
@@ -73,11 +71,21 @@ log_folder = "Lifestreams"
 
 # ----- 2.Identify file-----
 
-# Find file to edit
-edit_file = last_mod_file(log_folder)
+# Uses Try: / except to manage error if directory or file not present. 
+try:
+	# Find file to edit
+	edit_file = last_mod_file(log_folder)
 	
-# open file file to edit
-file_contents = read_markdown_file(edit_file)
+	# open markdown file to edit
+	file_contents = read_markdown_file(edit_file)
+	
+# Allows errors to be printed on console	
+except FileNotFoundError as error:
+	print(f"Error: {error}")
+	exit()
+except ValueError as error:
+	print(f"Error: {error}")
+	exit()
 
 # ----- 3.split file-----
 		
@@ -86,12 +94,12 @@ file_contents = read_markdown_file(edit_file)
 parts = file_contents.split("#### ")
 
 # This moves 1st section to separate list
-# We can come back to it when rebuilding the pagw
+# We can come back to it when rebuilding the page
 intro_section = parts[0]
-# Creats a seperate list of sections that i need to recview and possible edit.
+# Creates a seperate list of sections that i need to review and possible edit.
 search_sections = parts[1:]
 
-# Find  marker and replace is journal placehoder.
+# Find  marker and replace is journal placeholder.
 # NOTE: enumerate() returns place No. and object in list. allows me to directly edit the list 
 for i, section in enumerate(search_sections):
 	if "++++" in section:
