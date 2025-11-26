@@ -1,11 +1,37 @@
 # Author: Seamus Hughes
-# Date: 25th November 2025
+# Date: 26th November 2025
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
 import os # for files
 
 # ----Functions-----
+
+def main():
+	
+	# ----Variables----
+	log_folder = "Lifestreams"
+	
+	# Uses Try: / except to manage error if directory or file not present. 
+	try:
+		# Find file to edit
+		edit_file = last_mod_file(log_folder)
+	
+		# open markdown file to edit
+		file_contents = read_markdown_file(edit_file)
+		
+		# Split string tk allow eduti by of specific section
+		first_section, search_sections = splice(file_contents, "####")
+	
+	# Allows errors to be printed on console	
+	except FileNotFoundError as error:
+		print(f"Error: {error}")
+		exit()
+	except ValueError as error:
+		print(f"Error: {error}")
+		exit()
+	
+	return first_section, search_sections
 
 def last_mod_file(directory):
 	'''Compare all files in defined directory. Compare date last modified, returning file last modified.'''
@@ -61,48 +87,38 @@ def read_markdown_file(markdown_file):
 		
 	# Return the contents of markdown file as a string	
 	return file_contents
+
+def splice(contents, seperator):
+	'''Spliting the string but keeping the charachter/s that make the split in the resulting parts.'''
 	
+	# split contents of the file 
+	# NOTE add leading space at end to clear from list
+	parts = contents.split(seperator)
+	
+	# This moves 1st section to separate list
+	# We can come back to it when rebuilding the page
+	first_section = parts[0]
+	# Creates a seperate list of sections that i need to review and possible edit.
+	following_sections = parts[1:]
+	
+	# replace the #### that was removed during the split 
 
-# ----Variables----
-log_folder = "Lifestreams"
-
-# ----- 1. Setup-------
-
+	# NOTE: enumerate() returns place No. and object in list. allows me to directly edit the list
+	for i, section in enumerate(following_sections):
+		following_sections[i] = "#### " + section
+	
+	return first_section, following_sections
 
 # ----- 2.Identify file-----
-
-# Uses Try: / except to manage error if directory or file not present. 
-try:
-	# Find file to edit
-	edit_file = last_mod_file(log_folder)
-	
-	# open markdown file to edit
-	file_contents = read_markdown_file(edit_file)
-	
-# Allows errors to be printed on console	
-except FileNotFoundError as error:
-	print(f"Error: {error}")
-	exit()
-except ValueError as error:
-	print(f"Error: {error}")
-	exit()
-
+first_section, search_sections = main()
 # ----- 3.split file-----
-		
-# split contents of the file 
-# NOTE add leading space at end to clear from list
-parts = file_contents.split("#### ")
-
-# This moves 1st section to separate list
-# We can come back to it when rebuilding the page
-intro_section = parts[0]
-# Creates a seperate list of sections that i need to review and possible edit.
-search_sections = parts[1:]
 
 # Find  marker and replace is journal placeholder.
-# NOTE: enumerate() returns place No. and object in list. allows me to directly edit the list 
 for i, section in enumerate(search_sections):
 	if "++++" in section:
+
+	# replace with first line of curret section
+	
 		
 		print (section)
 		print ("-----------")
@@ -112,6 +128,3 @@ for i, section in enumerate(search_sections):
 		
 		print (search_sections[i])
 		print ("-----------")
-		
-		
-
