@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 26th November 2025
+# Date: 28th November 2025
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -11,6 +11,7 @@ def main():
 	
 	# ----Variables----
 	log_folder = "Lifestreams"
+	split_at = "####"
 	
 	# Uses Try: / except to manage error if directory or file not present. 
 	try:
@@ -20,8 +21,8 @@ def main():
 		# open markdown file to edit
 		file_contents = read_markdown_file(edit_file)
 		
-		# Split string tk allow eduti by of specific section
-		first_section, search_sections = splice(file_contents, "####")
+		# Split string to allow eduti by of specific section
+		first_section, search_sections = splice(file_contents, split_at)
 	
 	# Allows errors to be printed on console	
 	except FileNotFoundError as error:
@@ -116,15 +117,12 @@ first_section, search_sections = main()
 # Find  marker and replace is journal placeholder.
 for i, section in enumerate(search_sections):
 	if "++++" in section:
-
-	# replace with first line of curret section
-	
+		# split section into eaxh line
+		parts = search_sections[i].split("\n")
 		
-		print (section)
-		print ("-----------")
-		
-		# Modify actual list item in list
-		search_sections[i] = section.replace("++++", "New stuff!!!!")
+		# replace marker item in section
+		# parts[0] returns 1st line of sections
+		search_sections[i] = section.replace("++++", (parts[0]) + "\n\n> quote[^1]\\\n> -- *attribute*\n\n[^1]: note....")
 		
 		print (search_sections[i])
 		print ("-----------")
