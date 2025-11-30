@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 28th November 2025
+# Date: 30th November 2025
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
@@ -11,7 +11,9 @@ def main():
 	
 	# ----Variables----
 	log_folder = "Lifestreams"
-	split_at = "####"
+	split_at = "#### "
+	marker = "++++"
+	template = "\n\n> quote[^1]\\\n> -- *attribute*\n\n[^1]: note...."
 	
 	# Uses Try: / except to manage error if directory or file not present. 
 	try:
@@ -21,8 +23,10 @@ def main():
 		# open markdown file to edit
 		file_contents = read_markdown_file(edit_file)
 		
-		# Split string to allow eduti by of specific section
+		# Split string to allow edit by of specific section
 		first_section, search_sections = splice(file_contents, split_at)
+		
+		edited_sections = find_replace(search_sections, marker, template)
 	
 	# Allows errors to be printed on console	
 	except FileNotFoundError as error:
@@ -32,7 +36,7 @@ def main():
 		print(f"Error: {error}")
 		exit()
 	
-	return first_section, search_sections
+	return first_section, edited_sections
 
 def last_mod_file(directory):
 	'''Compare all files in defined directory. Compare date last modified, returning file last modified.'''
@@ -89,12 +93,12 @@ def read_markdown_file(markdown_file):
 	# Return the contents of markdown file as a string	
 	return file_contents
 
-def splice(contents, seperator):
-	'''Spliting the string but keeping the charachter/s that make the split in the resulting parts.'''
+def splice(contents, separator):
+	'''Spliting the string but keeping the character/s that make the split in the resulting parts.'''
 	
 	# split contents of the file 
 	# NOTE add leading space at end to clear from list
-	parts = contents.split(seperator)
+	parts = contents.split(separator)
 	
 	# This moves 1st section to separate list
 	# We can come back to it when rebuilding the page
@@ -106,23 +110,25 @@ def splice(contents, seperator):
 
 	# NOTE: enumerate() returns place No. and object in list. allows me to directly edit the list
 	for i, section in enumerate(following_sections):
-		following_sections[i] = "#### " + section
+		following_sections[i] = separator + section
 	
 	return first_section, following_sections
+	
+def find_replace(edit_list, find, replace):
+	# Find  marker and replace is journal placeholder.
+	for i, section in enumerate(edit_list):
+		if find in section:
+			# split section into each line
+			parts = edit_list[i].split("\n")
+			
+			# replace marker item in section
+			# parts[0] returns 1st line of sections
+			edit_list[i] = section.replace(find, (parts[0]) + replace)
+			
+			print (edit_list[i])
+			print ("-----------")
+	return edit_list
 
 # ----- 2.Identify file-----
-first_section, search_sections = main()
+first_section, edited_sections = main()
 # ----- 3.split file-----
-
-# Find  marker and replace is journal placeholder.
-for i, section in enumerate(search_sections):
-	if "++++" in section:
-		# split section into eaxh line
-		parts = search_sections[i].split("\n")
-		
-		# replace marker item in section
-		# parts[0] returns 1st line of sections
-		search_sections[i] = section.replace("++++", (parts[0]) + "\n\n> quote[^1]\\\n> -- *attribute*\n\n[^1]: note....")
-		
-		print (search_sections[i])
-		print ("-----------")
