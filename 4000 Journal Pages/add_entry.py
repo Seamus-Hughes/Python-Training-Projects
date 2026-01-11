@@ -1,9 +1,10 @@
 # Author: Seamus Hughes
-# Date: 30th November 2025
+# Date: 11th January 2026 
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
 import os # for files
+import re # for Regular Expressions search
 
 # ----Functions-----
 
@@ -27,6 +28,13 @@ def main():
 		first_section, search_sections = splice(file_contents, split_at)
 		
 		edited_sections = find_replace(search_sections, marker, template)
+		
+		# reconstruct file 
+		file_reconstruct = first_section + "".join(edited_sections)
+		print(file_reconstruct)
+		
+		#Create a list of footnote numbers 
+		correct_ref_list = find_reference_numbers(file_reconstruct)
 	
 	# Allows errors to be printed on console	
 	except FileNotFoundError as error:
@@ -115,6 +123,8 @@ def splice(contents, separator):
 	return first_section, following_sections
 	
 def find_replace(edit_list, find, replace):
+	''' Finds the marker and replaces it with journal entery placeholder'''
+	
 	# Find  marker and replace is journal placeholder.
 	for i, section in enumerate(edit_list):
 		if find in section:
@@ -128,7 +138,42 @@ def find_replace(edit_list, find, replace):
 			print (edit_list[i])
 			print ("-----------")
 	return edit_list
+	
+def find_reference_numbers(text):
+	'''Using regular expression search to find and log footnote numbers. '''
+	# This patten finds [^Num]
+	# \[. \^ and \] are escaped - recogmused as is in text & not code.
+	# \d+ = capture one or more digits.
+	# (?!:) = is a "negative lookahead" matches [^7] but NOT if followed by :
+	patten_ref = r"\[\^(\d+)\](?!:)"
+	patten_foot = r"\[\^(\d+)\]\:"
+	# replace numbers in numerica order.
+	counter_ref = 1
+	counter_foot = 1
+	new_text = text
+	
+	# This will search for the regular expression in the tezt
+	while re.search(patten_ref,new_text):
+		# Searches through the text fot a match to regx expression
+		# Count=1 makes it stop once its found the 1st instance
+		# FOOTNOTE is a place holder, if not there it would continue an endless loop of finding the regex match. 
+		# Placehoder can be removed later.
+		new_text = re.sub(patten_ref, f"[^FOOTNOTE{counter_ref}]", new_text, count=1)
+		# increases counter by 1 each loop.
+		counter_ref += 1
+	# replace placeholders
+	for i in range (1, counter_ref):
+		new_text = new_text.replace("FOOTNOTE", "")
+	
+	while re.search(patten_foot,new_text):
+		new_text = re.sub(patten_foot, f"[^FOOTNOTE{counter_foot}]:", new_text, count=1)
+		# increases counter by 1 each loop.
+		counter_foot += 1
+		
+	# replace placeholders
+	for i in range (1, counter_foot):
+		new_text = new_text.replace("FOOTNOTE", "")
 
-# ----- 2.Identify file-----
-first_section, edited_sections = main()
-# ----- 3.split file-----
+	print (new_text)
+
+main()
