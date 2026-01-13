@@ -1,12 +1,10 @@
 # Author: Seamus Hughes
-# Date: 11th January 2026 
+# Date: 13th January 2026 
 # Purpose: Add additional Markdown entry for my weekly Lifestream posts.
 
 # ----Imported Modules----
 import os # for files
 import re # for Regular Expressions search
-
-# ----Functions-----
 
 def main():
 	
@@ -21,7 +19,7 @@ def main():
 		# Find file to edit
 		edit_file = last_mod_file(log_folder)
 	
-		# open markdown file to edit
+		# obtain markdown contents to edit
 		file_contents = read_markdown_file(edit_file)
 		
 		# Split string to allow edit by of specific section
@@ -31,10 +29,16 @@ def main():
 		
 		# reconstruct file 
 		file_reconstruct = first_section + "".join(edited_sections)
-		print(file_reconstruct)
 		
-		#Create a list of footnote numbers 
-		correct_ref_list = find_reference_numbers(file_reconstruct)
+		#re order footnote numbers. 
+		new_text = replace_footnote_numbers(file_reconstruct)
+		
+		# write changes to file
+		with open(edit_file, 'w', encoding = "utf-8") as file:
+			file.write(new_text)
+		
+		print("file saved")
+		
 	
 	# Allows errors to be printed on console	
 	except FileNotFoundError as error:
@@ -44,7 +48,7 @@ def main():
 		print(f"Error: {error}")
 		exit()
 	
-	return first_section, edited_sections
+# ----Functions-----
 
 def last_mod_file(directory):
 	'''Compare all files in defined directory. Compare date last modified, returning file last modified.'''
@@ -135,45 +139,43 @@ def find_replace(edit_list, find, replace):
 			# parts[0] returns 1st line of sections
 			edit_list[i] = section.replace(find, (parts[0]) + replace)
 			
-			print (edit_list[i])
-			print ("-----------")
 	return edit_list
 	
-def find_reference_numbers(text):
-	'''Using regular expression search to find and log footnote numbers. '''
+def replace_footnote_numbers(text):
+	'''Using regular expression search to find and log footnote numbers. Then relplace with consecutive numbers. Sepeeste approach for footnoate and reference .'''
 	# This patten finds [^Num]
-	# \[. \^ and \] are escaped - recogmused as is in text & not code.
+	# \[. \^ and \] are escaped - recognised as is in text & not code.
 	# \d+ = capture one or more digits.
 	# (?!:) = is a "negative lookahead" matches [^7] but NOT if followed by :
 	patten_ref = r"\[\^(\d+)\](?!:)"
-	patten_foot = r"\[\^(\d+)\]\:"
-	# replace numbers in numerica order.
+	patten_foot = r"\[\^(\d+)\]:"
+	# replace numbers in numerical order.
 	counter_ref = 1
 	counter_foot = 1
 	new_text = text
 	
-	# This will search for the regular expression in the tezt
+	# This will search for the [^1] regular expression in the text
 	while re.search(patten_ref,new_text):
 		# Searches through the text fot a match to regx expression
 		# Count=1 makes it stop once its found the 1st instance
 		# FOOTNOTE is a place holder, if not there it would continue an endless loop of finding the regex match. 
 		# Placehoder can be removed later.
-		new_text = re.sub(patten_ref, f"[^FOOTNOTE{counter_ref}]", new_text, count=1)
+		new_text = re.sub(patten_ref, f"[^REF{counter_ref}]", new_text, count=1)
 		# increases counter by 1 each loop.
 		counter_ref += 1
 	# replace placeholders
 	for i in range (1, counter_ref):
-		new_text = new_text.replace("FOOTNOTE", "")
+		new_text = new_text.replace("REF", "")
 	
+	# This will search for the [^1]: regular expression in the text
 	while re.search(patten_foot,new_text):
-		new_text = re.sub(patten_foot, f"[^FOOTNOTE{counter_foot}]:", new_text, count=1)
+		new_text = re.sub(patten_foot, f"[^FOOT{counter_foot}]:", new_text, count=1)
 		# increases counter by 1 each loop.
 		counter_foot += 1
 		
 	# replace placeholders
 	for i in range (1, counter_foot):
-		new_text = new_text.replace("FOOTNOTE", "")
-
-	print (new_text)
+		new_text = new_text.replace("FOOT", "")
+	return new_text
 
 main()
