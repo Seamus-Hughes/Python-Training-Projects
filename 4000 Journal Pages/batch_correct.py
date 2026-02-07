@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 31st January 2026
+# Date: 7th Feb 2026
 # Purpose: Run through .md files in directory and correct numerical order if footnotes.
 
 import os  # For file
@@ -11,10 +11,12 @@ def main():
 	directory = "Lifestreams"
 	# This patten finds [^Num]
 	# \[. \^ and \] are escaped - recognised as is in text & not code.
-	# \d+ = capture one or more digits.
-	# (?!:) = is a “negative lookahead” matches [^7] but NOT if followed by :
+	# \d+ = capture one or more digits. is its in ( )
+	# (?!:) = is a "negative lookahead" matches [^7] but NOT if followed by :
 	pattern_ref = r"\[\^(\d+)\](?!:)"
 	pattern_foot = r"\[\^(\d+)\]:"
+	replace_ref = ""
+	replace_foot = ":"
 	
 	# Uses Try: / except to manage error if directory or file not present.
 	try:
@@ -30,11 +32,11 @@ def main():
 				file_content = read_markdown_file(source_path)
 				print(source_path)
 				
-				# check footnotes. 
-				footnotes = re.findall(pattern_ref, file_content)
-				print(f"Inital footnote ref No.: {footnotes}")
+				# Correct footnote ref numbers 
+				file_content = renum_foot(file_content, pattern_ref, replace_ref)
 				
-				#replace_footnote_numbers(file_content)
+				# Correct footnote numbers 
+				file_content = renum_foot(file_content, pattern_foot, replace_foot)
 		
 	# Allows errors to be printed on console
 	except (FileNotFoundError, ValueError, IsADirectoryError) as error:
@@ -58,43 +60,41 @@ def read_markdown_file(markdown_file):
 	# Return the contents of markdown file as a string
 	return file_contents
 
-def replace_footnote_numbers(text):
-	'''Using regular expression search to find and log footnote numbers. Then relplace with consecutive numbers. Sepeeste approach for footnoate and reference .'''
+def renum_foot(text, pattern, replace):
+	'''Using regular expression search to find and log footnote numbers. Then relplace with consecutive numbers.'''
+	
+	counter = 1
+	
 	# This patten finds [^Num]
 	# \[. \^ and \] are escaped - recognised as is in text & not code.
-	# \d+ = capture one or more digits.
-	# (?!:) = is a “negative lookahead” matches [^7] but NOT if followed by :
+	# \d+ = capture one or more digits. is its in ( )
+	# (?!:) = is a "negative lookahead" matches [^7] but NOT if followed by :
 	pattern_ref = r"\[\^(\d+)\](?!:)"
 	pattern_foot = r"\[\^(\d+)\]:"
-	# replace numbers in numerical order.
-	counter_ref = 1
-	counter_foot = 1
-	new_text = text
-
+	
+	
+	# check footnotes. 
+	before = re.findall(pattern, text)
+	
 	# This will search for the [^1] regular expression in the text
-	while re.search(pattern_ref, new_text):
-
-		# Searches through the text fot a match to regx expression
-		# Count=1 makes it stop once its found the 1st instance
-		# FOOTNOTE is a place holder, if not there it would continue an endless loop of finding the regex match.
-		# Placehoder can be removed later.
-		new_text = re.sub(pattern_ref, f"[^REF{counter_ref}]", new_text, count=1)
-		# increases counter by 1 each loop.
-		counter_ref += 1
-		# replace placeholders
-		for i in range(1, counter_ref):
-			new_text = new_text.replace("REF", "")
-
-		# This will search for the [^1]: regular expression in the text
-		while re.search(pattern_foot, new_text):
-			new_text = re.sub(patten_foot, f"[^FOOT{counter_foot}]:", new_text, count=1)
-			# increases counter by 1 each loop.
-			counter_foot += 1
-
+	while re.search(pattern, text):
+		text = re.sub(pattern,  f"[PLACE^{counter}]"+replace, text, count=1)
+		
+		counter += 1
+		
 	# replace placeholders
-	for i in range(1, counter_foot):
-		new_text = new_text.replace("FOOT", "")
-	return new_text
+	for _ in range(1, counter):
+		text = text.replace("PLACE", "")
+	
+	# check footnotes. 
+	after = re.findall(pattern, text)
+
+	if not before == after:
+		print ("differnt")
+	else:
+		print ("Same")
+	
+	return text
 
 
 main()
