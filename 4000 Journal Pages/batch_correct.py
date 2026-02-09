@@ -65,14 +65,6 @@ def renum_foot(text, pattern, replace):
 	
 	counter = 1
 	
-	# This patten finds [^Num]
-	# \[. \^ and \] are escaped - recognised as is in text & not code.
-	# \d+ = capture one or more digits. is its in ( )
-	# (?!:) = is a "negative lookahead" matches [^7] but NOT if followed by :
-	pattern_ref = r"\[\^(\d+)\](?!:)"
-	pattern_foot = r"\[\^(\d+)\]:"
-	
-	
 	# check footnotes. 
 	before = re.findall(pattern, text)
 	
