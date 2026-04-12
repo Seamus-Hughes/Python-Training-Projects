@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 2nd April 2026
+# Date: 12th April 2026
 # Purpose: Add additional Markdown entry for my daily to do list
 
 import os  # For dir list
@@ -69,39 +69,31 @@ def main():
 		exit()
 		
 def first_run(directory, prefix, postfix):
+	'''Check is Dir and file are present. if not creates Dir and File to alow program to run.'''
 	
 	# Create file path
 	list_dir = Path(directory)
-		
-	# Check path exists & is a dir
-	if list_dir.is_dir():
-		print("Folder exists")
-		# Check contents of Dir 
-		contents = os.listdir(directory)
-		print(contents)
-		if contents:
-			print("Dir has contents")
-			
-		return False
-	else:
-		print("First Run: Creating folder and file.")
-		# Creates Dir including any sub dir (parents = true)
-		# still runs as eveb if dir exsists (exist_ok=True)
-		list_dir.mkdir(parents=True, exist_ok=True)
-		
-		print("First run: creating Dir.")
-		
-		# Create first file
-		new_dt = datetime.today().date()  # today's date
+	# Creates Dir including any sub dir (parents = true)
+	# still runs as eveb if dir exsists (exist_ok=True)
+	list_dir.mkdir(parents=True, exist_ok=True)
+	# Check contents of Dir
+	contents = os.listdir(directory)
+	
+	# Adds file to dir if empty
+	if not contents:
+		new_dt = datetime.today().date()
 		new_file(new_dt, directory, prefix, postfix)
-		
-		return
+		return True
+	# *** TO DO ***
+	# Build initial file / template
+	return False
 		
 def new_file(new_dt, dir, pre, post):
-    date_str = new_dt.strftime("%Y.%m.%d")
-    file_path = Path(dir) / f"{pre}{date_str}{post}"
-    file_path.touch(exist_ok=True)
-    print(file_path)
+	'''Build and creates new file. converts datetime into date stting with correct format.'''
+	date_str = new_dt.strftime("%Y.%m.%d")
+	file_path = Path(dir) / f"{pre}{date_str}{post}"
+	file_path.touch(exist_ok=True)
+	print(file_path)
 		
 def strip_filename(names, pre, post):
 	'''Strip prefix and post fix from a file name to obtain list of dates used as part of file name'''
@@ -153,10 +145,5 @@ def read_md_file(path):
 
 	# Return the contents of markdown file as a string
 	return text
-
-def new_file(new_dt, dir, pre, post):
-	file_path = Path(dir) /(f"{pre} test{post}")
-	file_path.touch(exist_ok=True)
-	print("test")
 
 main()
