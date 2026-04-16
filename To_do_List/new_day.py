@@ -1,10 +1,11 @@
 # Author: Seamus Hughes
-# Date: 12th April 2026
+# Date: 16th April 2026
 # Purpose: Add additional Markdown entry for my daily to do list
 
 import os  # For dir list
 from pathlib import Path # for file creation
 from datetime import datetime, timedelta # for date conversion
+import re # ror string spliting
 
 def main():
 	
@@ -42,6 +43,8 @@ def main():
 		# build file path to open 
 		full_path = build_file_name(current_dt, pre, post, list_dir)
 		
+		print(f"Old path: {full_path}")
+		
 		# Text feom file to string
 		text = read_md_file(full_path)
 		
@@ -53,8 +56,15 @@ def main():
 		# New file name = old + 1 day
 		new_dt = current_dt + timedelta(days=1)
 		
-		# Create and Wlwrite to file
-		new_file(new_dt, list_dir, pre, post)
+		# Create next to do list file write to file
+		# Retuns full path name
+		new_path = new_file(new_dt, list_dir, pre, post)
+		
+		# Test print
+		print(f"new path: {new_path}")
+		
+		# Split old file contents
+		new_todo = split_todo(text)
 		
 		# Copy contebts of old file to new new file 
 		# Remove checked to do's 
@@ -93,7 +103,8 @@ def new_file(new_dt, dir, pre, post):
 	date_str = new_dt.strftime("%Y.%m.%d")
 	file_path = Path(dir) / f"{pre}{date_str}{post}"
 	file_path.touch(exist_ok=True)
-	print(file_path)
+	
+	return (file_path)
 		
 def strip_filename(names, pre, post):
 	'''Strip prefix and post fix from a file name to obtain list of dates used as part of file name'''
@@ -145,5 +156,17 @@ def read_md_file(path):
 
 	# Return the contents of markdown file as a string
 	return text
+	
+def split_todo(contents):
+	# Split file sections
+	split_text = contents.split("\n\n")
+	
+	# Create empty list 
+	result = []
+	# check each part of split text to find todo list section.
+	for part in split_text:
+		if "[ ]" in part or "[x]" in part:
+			result.append(part)
+	print(result)
 
 main()
