@@ -1,5 +1,5 @@
 # Author: Seamus Hughes
-# Date: 16th April 2026
+# Date: 22nd April 2026
 # Purpose: Add additional Markdown entry for my daily to do list
 
 import os  # For dir list
@@ -64,10 +64,20 @@ def main():
 		print(f"new path: {new_path}")
 		
 		# Split old file contents
-		new_todo = split_todo(text)
+		todo, done = split_todo(text)
 		
-		# Copy contebts of old file to new new file 
-		# Remove checked to do's 
+		print("To Do")
+		for item in todo:
+			print(item)
+		
+		print("Done list")
+		for item in done:
+			print(item)
+			
+		# Build new rext 
+		new_file_text(text, new_dt, todo)
+		
+		# Copy contebts of old file to new new file
 		# remove fiotnotes 
 		# renumber list of to ds 
 		# save to file 
@@ -158,6 +168,7 @@ def read_md_file(path):
 	return text
 	
 def split_todo(contents):
+	'''Splits file to '''
 	# Split file sections
 	split_text = contents.split("\n\n")
 	
@@ -167,6 +178,40 @@ def split_todo(contents):
 	for part in split_text:
 		if "[ ]" in part or "[x]" in part:
 			result.append(part)
-	print(result)
+	
+	# Prevents crash is list empty
+	if not result:
+		return [], []
+	
+	split_list = result[0].split("\n")
+	
+	done_list = []
+	to_do_list = []
+	
+	for part in split_list:
+		if "[ ]" in part:
+			to_do_list.append(part)
+		else:
+			done_list.append(part)
+	
+	return to_do_list, done_list
 
+def new_file_text(text, new_dt, todo):
+	
+	new_title = new_dt.strftime("# To Do %Y.%m.%d")
+	
+	todo_st = ""
+	for line in todo:
+		todo_st += line + "\n"
+	
+	
+	# Split file sections
+	split_text = text.split("\n\n")
+	
+	new_text = new_title + "\n\n" + split_text[1] + "\n\n" + todo_st
+	
+	print(new_text)
+	
+	return 
+		
 main()
